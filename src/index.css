@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+@theme {
+  /* --- COLORES BASE (Fondo y Texto) --- */
+  /* Un gris muy oscuro casi negro con un tinte azulado para evitar el #000000 puro que cansa la vista */
+  --color-background: #0f172a; 
+  /* Un gris ligeramente más claro para tarjetas o paneles */
+  --color-surface: #1e293b; 
+  /* Texto principal blanco hueso */
+  --color-text-main: #f8fafc; 
+  /* Texto secundario gris azulado */
+  --color-text-muted: #94a3b8; 
+
+  /* --- COLORES DE ACENTO (La personalidad) --- */
+  /* AZUL NEÓN: Para botones principales, enlaces o estados activos */
+  --color-primary: #3b82f6; 
+  --color-primary-hover: #2563eb;
+
+  /* MORADO PROFUNDO: Para gradientes, bordes o elementos secundarios */
+  --color-secondary: #8b5cf6; 
+  --color-secondary-hover: #7c3aed;
+
+  /* ROJO INTENSO: Para errores, alertas o el botón de "Me gusta" / "Favorito" */
+  --color-danger: #ef4444; 
+  --color-danger-hover: #dc2626;
+
+  /* AMARILLO/DORADO: Para las estrellas de rating */
+  --color-rating: #eab308;
+}
+
+html {font-size: 62.5%;}
