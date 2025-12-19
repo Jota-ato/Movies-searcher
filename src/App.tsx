@@ -20,7 +20,7 @@ function App() {
                     <MySlider />
                 </div>
             </div>
-            {errorAtCall && <p className="text-center text-red-500">Error al cargar películas</p>}
+            {errorAtCall && <p className="text-center text-red-500">Error while loading the movies</p>}
             {!errorAtCall && <PeliculaMasVista />}
 
         </>

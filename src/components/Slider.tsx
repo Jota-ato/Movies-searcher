@@ -11,7 +11,11 @@ import { getBackdropUrl } from '../helpers';
 
 const MySlider = () => {
 
-    const { trendingMovies } = useMovesStore()
+    const { trendingMovies, errorAtCall } = useMovesStore()
+
+    if (errorAtCall || !trendingMovies.length) {
+        return <p>Error al cargar películas...</p>
+    }
 
     return (
         <Swiper
@@ -36,7 +40,14 @@ const MySlider = () => {
                             }}
                         />
                     </DarkBackground>
-
+                    <div className="absolute inset-0 z-100 text-white p-24 w-full md:w-[70%] h-full flex flex-col justify-center">
+                        <h2 className="text-4xl md:text-6xl font-bold drop-shadow-lg">
+                            {movie.title}
+                        </h2>
+                        <p className="text-2xl md:text-3xl mt-4 text-justify max-w-2xl">
+                            {movie.overview}
+                        </p>
+                    </div>
                 </SwiperSlide>
             ))}
         </Swiper>
