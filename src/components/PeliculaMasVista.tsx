@@ -13,7 +13,7 @@ export default function PeliculaMasVista() {
     const { title, overview, vote_average, release_date, backdrop_path } = movie
 
     return (
-        <div className="flex">
+        <div className="flex flex-col md:flex-row">
             <div className="flex justify-center items-center" style={{ flexBasis: '40%' }}>
                 <img src={getBackdropUrl(backdrop_path)} alt="Imagen de la película" />
             </div>

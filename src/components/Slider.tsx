@@ -30,8 +30,10 @@ const MySlider = () => {
                 >
                     <DarkBackground>
                         <div
-                            className="h-full bg-cover w-full bg-center bg-no-repeat"
-                            style={{ backgroundImage: `url(${getBackdropUrl(movie.backdrop_path)})` }}
+                            className="h-full w-full bg-cover bg-center bg-no-repeat"
+                            style={{
+                                backgroundImage: `url(${getBackdropUrl(movie.backdrop_path)})`
+                            }}
                         />
                     </DarkBackground>
 

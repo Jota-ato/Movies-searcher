@@ -16,7 +16,7 @@ function App() {
         <>
             <div className="mb-20">
                 <BarraSuperior />
-                <div className="h-240">
+                <div className="h-screen max-h-320">
                     <MySlider />
                 </div>
             </div>
