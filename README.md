@@ -154,9 +154,7 @@ This project is open source and available under the MIT License.
 - [Swiper](https://swiperjs.com/) for the excellent carousel component
 - The React community for the amazing tools and libraries
 
----
 ##Prove by yourself
-```
-    https://movie-searcher-ts.netlify.app/
-```
+https://movie-searcher-ts.netlify.app/
+---
 ⭐ If you like this project, give it a star on GitHub!
