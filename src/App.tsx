@@ -1,16 +1,28 @@
 import BarraSuperior from "./components/BarraSuperior"
+import PeliculaMasVista from "./components/PeliculaMasVista"
 import MySlider from "./components/Slider"
+import { useMovesStore } from "./store"
+import { useEffect } from "react"
 
 function App() {
 
+    const { getTrendingMovies, errorAtCall } = useMovesStore()
+
+    useEffect(() => {
+        getTrendingMovies()
+    }, [])
+
     return (
         <>
-            <div>
+            <div className="mb-20">
                 <BarraSuperior />
-                <div className="h-200">
-                    <MySlider/>
+                <div className="h-240">
+                    <MySlider />
                 </div>
             </div>
+            {errorAtCall && <p className="text-center text-red-500">Error al cargar películas</p>}
+            {!errorAtCall && <PeliculaMasVista />}
+
         </>
     )
 }

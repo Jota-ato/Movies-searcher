@@ -1,16 +1,17 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
-import { sliderPhotos } from '../db/sliderPhotos';
 import DarkBackground from './DarkBackground';
 
 // Importar los estilos de Swiper
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import { useMovesStore } from '../store';
+import { getBackdropUrl } from '../helpers';
 
 const MySlider = () => {
 
-
+    const { trendingMovies } = useMovesStore()
 
     return (
         <Swiper
@@ -23,14 +24,14 @@ const MySlider = () => {
             autoplay={{ delay: 3000 }}
             className='h-full'
         >
-            {sliderPhotos.map((photo, idx) => (
+            {trendingMovies.map((movie, idx) => (
                 <SwiperSlide
                     key={idx}
                 >
                     <DarkBackground>
                         <div
                             className="h-full bg-cover w-full bg-center bg-no-repeat"
-                            style={{ backgroundImage: `url(./${photo})` }}
+                            style={{ backgroundImage: `url(${getBackdropUrl(movie.backdrop_path)})` }}
                         />
                     </DarkBackground>
 
