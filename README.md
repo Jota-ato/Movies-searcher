@@ -1,138 +1,159 @@
 # 🎬 Movie Searcher
 
-Una aplicación web moderna para explorar películas populares utilizando la API de The Movie Database (TMDb). Construida con React, TypeScript, y Tailwind CSS.
+A modern web application to explore popular movies using The Movie Database (TMDb) API. Built with React, TypeScript, and Tailwind CSS.
 
-## ✨ Características
+## ✨ Features
 
-- 🔥 **Películas en Tendencia**: Visualiza las películas más populares de la semana en un slider interactivo
-- 📊 **Información Detallada**: Consulta calificaciones, fechas de estreno y sinopsis
-- 🎨 **Diseño Moderno**: Interfaz responsiva con Tailwind CSS
-- 📱 **Responsive**: Adaptado para dispositivos móviles y desktop
-- ⚡ **Rendimiento Optimizado**: Imágenes de alta calidad con carga eficiente
-- 🔄 **Estado Global**: Gestión de estado con Zustand
-- ✅ **Validación de Datos**: Esquemas de validación con Zod
+- 🔥 **Trending Movies**: View the most popular movies of the week in an interactive slider
+- 📊 **Detailed Information**: Check ratings, release dates, and synopses
+- 🎨 **Modern Design**: Responsive interface with Tailwind CSS
+- 📱 **Responsive**: Optimized for mobile and desktop devices
+- ⚡ **Optimized Performance**: High-quality images with efficient loading
+- 🔄 **Global State**: State management with Zustand
+- ✅ **Data Validation**: Schema validation with Zod
 
-## 🛠️ Tecnologías
+## 🛠️ Tech Stack
 
-- **React 19** - Biblioteca de UI
-- **TypeScript** - Tipado estático
-- **Vite** - Build tool y dev server
-- **Tailwind CSS 4** - Framework de estilos
-- **Zustand** - Gestión de estado
-- **Axios** - Cliente HTTP
-- **Swiper** - Carrusel de imágenes
-- **Zod** - Validación de esquemas
+- **React 19** - UI Library
+- **TypeScript** - Static typing
+- **Vite** - Build tool and dev server
+- **Tailwind CSS 4** - Styling framework
+- **Zustand** - State management
+- **Axios** - HTTP client
+- **Swiper** - Image carousel
+- **Zod** - Schema validation
 
-## 🚀 Instalación
+## 🚀 Installation
 
-1. **Clona el repositorio**
+1. **Clone the repository**
    ```bash
    git clone https://github.com/Jota-ato/Movies-searcher.git
    cd Movies-searcher
    ```
 
-2. **Instala las dependencias**
+2. **Install dependencies**
    ```bash
    npm install
    ```
 
-3. **Configura las variables de entorno**
+3. **Configure environment variables**
    
-   Crea un archivo `.env` en la raíz del proyecto:
+   Create a `.env.local` file in the project root:
    ```env
-   VITE_API_KEY=tu_api_key_de_tmdb
+   VITE_API_KEY=your_tmdb_api_key
    ```
    
-   > 💡 Obtén tu API key gratis en [The Movie Database](https://www.themoviedb.org/settings/api)
+   > 💡 Get your free API key at [The Movie Database](https://www.themoviedb.org/settings/api)
 
-4. **Inicia el servidor de desarrollo**
+4. **Start the development server**
    ```bash
    npm run dev
    ```
 
-5. **Abre tu navegador**
+5. **Open your browser**
    
-   Visita `http://localhost:5173`
+   Visit `http://localhost:5173`
 
-## 📦 Scripts Disponibles
+## 📦 Available Scripts
 
 ```bash
-npm run dev      # Inicia el servidor de desarrollo
-npm run build    # Construye la aplicación para producción
-npm run preview  # Previsualiza la build de producción
-npm run lint     # Ejecuta el linter
+npm run dev      # Start the development server
+npm run build    # Build the application for production
+npm run preview  # Preview the production build
+npm run lint     # Run the linter
 ```
 
-## 📁 Estructura del Proyecto
+## 📁 Project Structure
 
 ```
 Movie-searcher/
 ├── src/
 │   ├── components/
-│   │   ├── BarraSuperior.tsx      # Barra de navegación
-│   │   ├── DarkBackground.tsx     # Overlay oscuro
-│   │   ├── PeliculaMasVista.tsx   # Componente de película destacada
-│   │   └── Slider.tsx             # Carrusel de películas
+│   │   ├── BarraSuperior.tsx      # Navigation bar
+│   │   ├── DarkBackground.tsx     # Dark overlay
+│   │   ├── PeliculaMasVista.tsx   # Featured movie component
+│   │   └── Slider.tsx             # Movie carousel
+│   ├── db/
+│   │   └── index.ts               # Database utilities
 │   ├── helpers/
-│   │   └── index.ts               # Funciones auxiliares
-│   ├── store.ts                   # Estado global con Zustand
-│   ├── App.tsx                    # Componente principal
-│   └── main.tsx                   # Punto de entrada
-├── public/                        # Archivos estáticos
+│   │   └── index.ts               # Helper functions
+│   ├── store.ts                   # Global state with Zustand
+│   ├── App.tsx                    # Main component
+│   ├── main.tsx                   # Entry point
+│   └── index.css                  # Global styles
+├── public/                        # Static files
 └── package.json
 ```
 
-## 🎯 Características Principales
+## 🎯 Key Features
 
-### Slider de Películas Populares
-- Carrusel automático con las 6 películas más vistas de la semana
-- Navegación manual con flechas
-- Paginación con puntos clickeables
-- Imágenes en resolución original para máxima calidad
+### Popular Movies Slider
+- Automatic carousel with the top 6 most-watched movies of the week
+- Manual navigation with arrows
+- Clickable pagination dots
+- Original resolution images for maximum quality
+- Smooth transitions and autoplay functionality
 
-### Película Destacada
-- Muestra la película #1 en tendencia
-- Información detallada: título, sinopsis, calificación y fecha de estreno
-- Diseño de dos columnas (40% imagen / 60% información)
-- Botón de acción para más detalles
+### Featured Movie
+- Displays the #1 trending movie
+- Detailed information: title, synopsis, rating, and release date
+- Two-column layout (40% image / 60% information)
+- Action button for more details
+- Responsive design that adapts to different screen sizes
 
-### Manejo de Errores
-- Validación de datos con Zod
-- Mensajes de error amigables
-- Estados de carga mientras se obtienen los datos
+### Error Handling
+- Data validation with Zod schemas
+- User-friendly error messages
+- Loading states while fetching data
+- Graceful fallbacks for API failures
 
 ## 🌐 API
 
-Este proyecto utiliza [The Movie Database (TMDb) API](https://www.themoviedb.org/documentation/api) para obtener información de películas.
+This project uses [The Movie Database (TMDb) API](https://www.themoviedb.org/documentation/api) to fetch movie information.
 
-### Endpoints utilizados:
-- `GET /trending/movie/week` - Películas en tendencia de la semana
+### Endpoints used:
+- `GET /trending/movie/week` - Trending movies of the week
 
-## 🤝 Contribuciones
+### Data Schema
+The application validates all API responses using Zod to ensure type safety:
+- Movie ID, title, and overview
+- Backdrop and poster paths
+- Release date and vote average
+- Adult content flag
 
-Las contribuciones son bienvenidas. Por favor:
+## 🎨 Design Highlights
 
-1. Haz fork del proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
+- **Dark Theme**: Modern dark color scheme for comfortable viewing
+- **Glassmorphism Effects**: Subtle blur and transparency effects
+- **Smooth Animations**: Transitions and hover effects throughout
+- **Responsive Grid**: Adapts seamlessly from mobile to desktop
+- **High-Quality Images**: Uses TMDb's original image resolution
 
-## 📝 Licencia
+## 🤝 Contributing
 
-Este proyecto es de código abierto y está disponible bajo la licencia MIT.
+Contributions are welcome! Please follow these steps:
 
-## 👤 Autor
+1. Fork the project
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is open source and available under the MIT License.
+
+## 👤 Author
 
 **Jota-ato**
 - GitHub: [@Jota-ato](https://github.com/Jota-ato)
 
-## 🙏 Agradecimientos
+## 🙏 Acknowledgments
 
-- [The Movie Database (TMDb)](https://www.themoviedb.org/) por proporcionar la API
-- [Swiper](https://swiperjs.com/) por el excelente componente de carrusel
-- La comunidad de React por las increíbles herramientas y librerías
+- [The Movie Database (TMDb)](https://www.themoviedb.org/) for providing the API
+- [Swiper](https://swiperjs.com/) for the excellent carousel component
+- The React community for the amazing tools and libraries
 
 ---
 
-⭐ Si te gusta este proyecto, ¡dale una estrella en GitHub!
+⭐ If you like this project, give it a star on GitHub!
