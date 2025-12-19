@@ -1,5 +1,6 @@
 import { useMovesStore } from "../store"
 import { getBackdropUrl } from "../helpers"
+import { Link } from "react-router-dom"
 
 export default function PeliculaMasVista() {
     const { trendingMovies } = useMovesStore()
@@ -22,11 +23,11 @@ export default function PeliculaMasVista() {
                 <h3 className="text-6xl font-bold mb-8">{title}</h3>
                 <p className="text-justify">{overview}</p>
                 <h3 className="my-8 text-4xl font-bold">Statistics</h3>
-                <ul className="space-y-4">
+                <ul className="space-y-4 mb-8">
                     <li className="font-bold">Rating: <span className="font-black">{vote_average}</span></li>
                     <li className="font-bold">Release date: <span className="font-black">{release_date}</span></li>
                 </ul>
-                <button className="bg-primary hover:bg-primary-hover cursor-pointer text-white font-bold py-2 px-4 rounded mt-8">More information</button>
+                <Link className="bg-primary hover:bg-primary-hover cursor-pointer text-white font-bold py-2 px-4 rounded" to={`/movie/${movie.id}`}>More information</Link>
             </div>
         </div>
     )

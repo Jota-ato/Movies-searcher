@@ -3,14 +3,17 @@ import PeliculaMasVista from "./components/PeliculaMasVista"
 import MySlider from "./components/Slider"
 import { useMovesStore } from "./store"
 import { useEffect } from "react"
+import { useLocation } from "react-router-dom"
 
 function App() {
 
-    const { getTrendingMovies, errorAtCall } = useMovesStore()
+    const { getTrendingMovies, errorAtCall, resetError } = useMovesStore()
+    const location = useLocation()
 
     useEffect(() => {
+        resetError()
         getTrendingMovies()
-    }, [])
+    }, [location.pathname, getTrendingMovies, resetError])
 
     return (
         <>

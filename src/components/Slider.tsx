@@ -1,6 +1,7 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import DarkBackground from './DarkBackground';
+import { Link } from 'react-router-dom';
 
 // Importar los estilos de Swiper
 import 'swiper/css';
@@ -47,6 +48,7 @@ const MySlider = () => {
                         <p className="text-2xl md:text-3xl mt-4 text-justify max-w-2xl">
                             {movie.overview}
                         </p>
+                        <Link to={`/movie/${movie.id}`} className="text-primary font-bold mt-4">More information</Link>
                     </div>
                 </SwiperSlide>
             ))}

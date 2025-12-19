@@ -1,13 +1,14 @@
+import { Link } from "react-router-dom"
 
 export default function BarraSuperior() {
     return (
         <div className="p-8 flex flex-col md:flex-row items-center justify-between gap-8 bg-surface">
-            <h1 className="text-[2.6rem] font-black">Movies Searcher</h1>
+            <Link to="/" className="text-[2.6rem] font-black">Movies Searcher</Link>
             <nav className="flex flex-col md:flex-row items-center gap-8">
-                <a className="text-2xl font-medium cursor-pointer " href="#">Home</a>
-                <a className="text-2xl font-medium cursor-pointer " href="#">Movies</a>
-                <a className="text-2xl font-medium cursor-pointer " href="#">Series</a>
-                <a className="text-2xl font-medium cursor-pointer " href="#">Favorites</a>
+                <Link className="text-2xl font-medium cursor-pointer " to="/">Home</Link>
+                <Link className="text-2xl font-medium cursor-pointer " to="/movies">Movies</Link>
+                <Link className="text-2xl font-medium cursor-pointer " to="/series">Series</Link>
+                <Link className="text-2xl font-medium cursor-pointer " to="/favorites">Favorites</Link>
 
                 <input
                     type="text"
