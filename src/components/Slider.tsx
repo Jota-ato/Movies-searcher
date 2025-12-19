@@ -6,6 +6,7 @@ import { sliderPhotos } from '../db/sliderPhotos';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import Modal from './Modal';
 
 const MySlider = () => {
     
@@ -26,9 +27,16 @@ const MySlider = () => {
                 <SwiperSlide
                     key={idx}
                 >
-                    <div
-                        className={`h-full bg-[url(.\\${photo})] bg-cover`}
-                    >
+                    <div className='absolute h-full w-full'>
+                        <Modal
+                        styles="relative top-0 left-0 w-full h-full"
+                        >
+                            <div
+                                className="h-full bg-cover w-full bg-center bg-no-repeat"
+                            style={{backgroundImage: `url(./${photo})`}}
+                        >
+                        </div>
+                        </Modal>
                     </div>
                 </SwiperSlide>
             ))}
