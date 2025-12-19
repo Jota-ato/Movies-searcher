@@ -7,7 +7,7 @@ function App() {
         <>
             <div>
                 <BarraSuperior />
-                <div className="h-480">
+                <div className="h-[50rem]">
                     <MySlider/>
                 </div>
             </div>

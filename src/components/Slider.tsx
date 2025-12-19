@@ -20,16 +20,16 @@ const MySlider = () => {
         navigation
         pagination={{ clickable: true }}
         autoplay={{ delay: 3000 }}
+        className='h-full'
         >
             {sliderPhotos.map((photo, idx) => (
                 <SwiperSlide
                     key={idx}
                 >
-                    <img
-                        src={photo}
-                        alt={`photo ${idx}`}
-                        className='w-full'
-                    />
+                    <div
+                        className={`h-full bg-[url(.\\${photo})] bg-cover`}
+                    >
+                    </div>
                 </SwiperSlide>
             ))}
         </Swiper>
