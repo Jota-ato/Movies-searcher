@@ -6,6 +6,7 @@ import { useEffect } from "react"
 import { useLocation } from "react-router-dom"
 import Spinner from "./components/Spinner"
 import ErrorLoading from "./components/ErrorLoading"
+import MoviesSection from "./components/MoviesSection"
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
             {isLoading && <Spinner />}
             {errorAtCall && <ErrorLoading />}
             {!errorAtCall && <PeliculaMasVista />}
+            <MoviesSection />
         </>
     )
 }

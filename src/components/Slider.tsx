@@ -12,7 +12,7 @@ import { getBackdropUrl } from '../helpers';
 
 const MySlider = () => {
 
-    const { trendingMovies, errorAtCall } = useMoviesStore()
+    const { sixTrendingMovies: trendingMovies, errorAtCall } = useMoviesStore()
 
     if (errorAtCall || !trendingMovies.length) {
         return <p>Error al cargar películas...</p>
@@ -29,9 +29,9 @@ const MySlider = () => {
             autoplay={{ delay: 3000 }}
             className='h-full'
         >
-            {trendingMovies.map((movie, idx) => (
+            {trendingMovies.map((movie) => (
                 <SwiperSlide
-                    key={idx}
+                    key={movie.id}
                 >
                     <DarkBackground>
                         <div

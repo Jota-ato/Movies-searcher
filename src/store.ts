@@ -7,6 +7,7 @@ type MovesState = {
     isLoading: boolean
     errorAtCall: boolean
     api_key: string
+    sixTrendingMovies: Movie[]
     trendingMovies: Movie[]
     activeMovie: Movie | null
     getTrendingMovies: () => Promise<void>
@@ -19,6 +20,7 @@ export const useMoviesStore = create<MovesState>()(
         isLoading: false,
         errorAtCall: false,
         api_key: import.meta.env.VITE_API_KEY,
+        sixTrendingMovies: [],
         trendingMovies: [],
         activeMovie: null,
         getTrendingMovies: async () => {
@@ -26,8 +28,10 @@ export const useMoviesStore = create<MovesState>()(
             try {
                 const { data } = await axios(`https://api.themoviedb.org/3/trending/movie/week?api_key=${get().api_key}`)
 
-                const sixMovies = z.array(movieSchema).parse(data.results.slice(0, 6))
-                set({ trendingMovies: sixMovies })
+                const TrendingMovies = z.array(movieSchema).parse(data.results)
+                const sixMovies = TrendingMovies.slice(0, 6)
+                set({ sixTrendingMovies: sixMovies })
+                set({ trendingMovies: TrendingMovies })
             } catch (err) {
                 console.log(err)
                 set({ errorAtCall: true })

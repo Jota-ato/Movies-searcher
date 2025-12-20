@@ -3,7 +3,7 @@ import { getBackdropUrl } from "../helpers"
 import { Link } from "react-router-dom"
 
 export default function PeliculaMasVista() {
-    const { trendingMovies } = useMoviesStore()
+    const { sixTrendingMovies: trendingMovies } = useMoviesStore()
 
     // Verificar que haya películas antes de renderizar
     if (trendingMovies.length === 0) {
