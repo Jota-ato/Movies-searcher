@@ -4,13 +4,16 @@ A modern web application to explore popular movies using The Movie Database (TMD
 
 ## ✨ Features
 
-- 🔥 **Trending Movies**: View the most popular movies of the week in an interactive slider
-- 📊 **Detailed Information**: Check ratings, release dates, and synopses
-- 🎨 **Modern Design**: Responsive interface with Tailwind CSS
-- 📱 **Responsive**: Optimized for mobile and desktop devices
-- ⚡ **Optimized Performance**: High-quality images with efficient loading
-- 🔄 **Global State**: State management with Zustand
-- ✅ **Data Validation**: Schema validation with Zod
+- � **Movie Search**: Real-time search functionality to find any movie in the TMDb database
+- �🔥 **Trending Movies**: View the most popular movies of the week in an interactive slider
+- 🎬 **Individual Movie Pages**: Detailed view for each movie with full information and backdrop images
+- 📊 **Comprehensive Information**: Ratings, release dates, synopses, and high-quality posters
+- 🎨 **Modern Design**: Sleek dark theme with responsive interface using Tailwind CSS
+- 📱 **Fully Responsive**: Optimized grid layouts that adapt from mobile to desktop (2 columns on tablet, 4 on desktop)
+- ⚡ **Optimized Performance**: Efficient image loading with placeholder fallbacks for missing images
+- 🔄 **Global State Management**: Centralized state with Zustand for seamless data flow
+- ✅ **Type-Safe Data Validation**: Runtime schema validation with Zod for API responses
+- 🎯 **Smart Error Handling**: Graceful error states and loading indicators throughout the app
 
 ## 🛠️ Tech Stack
 
@@ -18,6 +21,7 @@ A modern web application to explore popular movies using The Movie Database (TMD
 - **TypeScript** - Static typing
 - **Vite** - Build tool and dev server
 - **Tailwind CSS 4** - Styling framework
+- **React Router** - Client-side routing
 - **Zustand** - State management
 - **Axios** - HTTP client
 - **Swiper** - Image carousel
@@ -69,23 +73,36 @@ npm run lint     # Run the linter
 Movie-searcher/
 ├── src/
 │   ├── components/
-│   │   ├── BarraSuperior.tsx      # Navigation bar
-│   │   ├── DarkBackground.tsx     # Dark overlay
-│   │   ├── PeliculaMasVista.tsx   # Featured movie component
-│   │   └── Slider.tsx             # Movie carousel
-│   ├── db/
-│   │   └── index.ts               # Database utilities
+│   │   ├── UpperBar.tsx            # Navigation bar with search
+│   │   ├── SearchedMovies.tsx      # Search results display
+│   │   ├── FullPageMovie.tsx       # Individual movie detail page
+│   │   ├── PeliculaMasVista.tsx    # Featured movie component
+│   │   ├── MoviesSection.tsx       # Trending movies grid
+│   │   ├── Slider.tsx              # Movie carousel
+│   │   ├── Spinner.tsx             # Loading indicator
+│   │   ├── ErrorLoading.tsx        # Error state component
+│   │   ├── Modal.tsx               # Modal overlay component
+│   │   └── DarkBackground.tsx      # Dark overlay
+│   ├── types/
+│   │   └── index.ts                # TypeScript types and Zod schemas
 │   ├── helpers/
-│   │   └── index.ts               # Helper functions
-│   ├── store.ts                   # Global state with Zustand
-│   ├── App.tsx                    # Main component
-│   ├── main.tsx                   # Entry point
-│   └── index.css                  # Global styles
-├── public/                        # Static files
+│   │   └── index.ts                # Helper functions (image URLs, etc.)
+│   ├── store.ts                    # Global state with Zustand
+│   ├── App.tsx                     # Main component with routing
+│   ├── main.tsx                    # Entry point
+│   └── index.css                   # Global styles with Tailwind
+├── public/                         # Static files
 └── package.json
 ```
 
 ## 🎯 Key Features
+
+### Real-Time Movie Search
+- Instant search functionality in the navigation bar
+- Search across the entire TMDb database
+- Controlled input component for smooth typing experience
+- Results displayed in responsive grid layout
+- Automatic fallback to placeholder images for movies without posters
 
 ### Popular Movies Slider
 - Automatic carousel with the top 6 most-watched movies of the week
@@ -94,12 +111,19 @@ Movie-searcher/
 - Original resolution images for maximum quality
 - Smooth transitions and autoplay functionality
 
-### Featured Movie
-- Displays the #1 trending movie
+### Individual Movie Pages
+- Dedicated page for each movie with full details
+- Large backdrop images with hero section design
+- Complete movie information including cast and crew details
+- Dynamic routing with React Router
+- Error handling for invalid movie IDs
+
+### Featured Movie Section
+- Displays the #1 trending movie on the homepage
 - Detailed information: title, synopsis, rating, and release date
-- Two-column layout (40% image / 60% information)
-- Action button for more details
-- Responsive design that adapts to different screen sizes
+- Two-column responsive layout
+- Action button to navigate to full movie page
+- Adapts seamlessly across different screen sizes
 
 ### Error Handling
 - Data validation with Zod schemas
@@ -113,13 +137,14 @@ This project uses [The Movie Database (TMDb) API](https://www.themoviedb.org/doc
 
 ### Endpoints used:
 - `GET /trending/movie/week` - Trending movies of the week
+- `GET /movie/{movie_id}` - Individual movie details
+- `GET /search/movie` - Search for movies by query
 
 ### Data Schema
 The application validates all API responses using Zod to ensure type safety:
-- Movie ID, title, and overview
-- Backdrop and poster paths
-- Release date and vote average
-- Adult content flag
+- **Movie Schema**: ID, title, overview, backdrop_path (nullable), poster_path (nullable), release_date, vote_average, adult flag
+- **Search Result Schema**: page, results array, total_pages, total_results
+- Nullable image paths handle cases where movies don't have posters or backdrops
 
 ## 🎨 Design Highlights
 
@@ -154,7 +179,10 @@ This project is open source and available under the MIT License.
 - [Swiper](https://swiperjs.com/) for the excellent carousel component
 - The React community for the amazing tools and libraries
 
-##Prove by yourself
-https://movie-searcher-ts.netlify.app/
+## 🌟 Live Demo
+
+Try it yourself: [https://movie-searcher-ts.netlify.app/](https://movie-searcher-ts.netlify.app/)
+
 ---
+
 ⭐ If you like this project, give it a star on GitHub!
