@@ -7,7 +7,7 @@ export default function MoviesSection() {
     const { trendingMovies } = useMoviesStore()
 
     return (
-        <div className="bg-surface p-8">
+        <div id="moviesSection" className="bg-surface p-8">
             <h2 className="text-4xl font-bold mb-8 text-text-muted">More movies</h2>
             <div className="grid grid-cols-4 gap-4">
                 {trendingMovies.map(movie => (

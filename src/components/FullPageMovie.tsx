@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useMoviesStore } from "../store";
-import BarraSuperior from "./BarraSuperior";
+import UpperBar from "./UpperBar";
 import { useParams } from "react-router-dom";
 import { getBackdropUrl } from "../helpers";
 import ErrorLoading from "./ErrorLoading";
@@ -19,7 +19,7 @@ export default function FullPageMovie() {
     if (!id || errorAtCall) {
         return (
             <>
-                <BarraSuperior />
+                <UpperBar />
                 <ErrorLoading />
             </>
         )
@@ -32,7 +32,7 @@ export default function FullPageMovie() {
     return (
         <>
             <div>
-                <BarraSuperior />
+                <UpperBar />
             </div>
 
             {/* Hero section with backdrop */}
