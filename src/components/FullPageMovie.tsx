@@ -1,13 +1,15 @@
 import { useEffect } from "react";
-import { useMovesStore } from "../store";
+import { useMoviesStore } from "../store";
 import BarraSuperior from "./BarraSuperior";
 import { useParams } from "react-router-dom";
 import { getBackdropUrl } from "../helpers";
+import ErrorLoading from "./ErrorLoading";
+import Spinner from "./Spinner";
 
 export default function FullPageMovie() {
 
     const { id } = useParams()
-    const { getMovieById, errorAtCall, activeMovie } = useMovesStore()
+    const { getMovieById, errorAtCall, activeMovie } = useMoviesStore()
 
 
     useEffect(() => {
@@ -15,10 +17,15 @@ export default function FullPageMovie() {
     }, [id, getMovieById])
 
     if (!id || errorAtCall) {
-        return (<p>Movie not found</p>)
+        return (
+            <>
+                <BarraSuperior />
+                <ErrorLoading />
+            </>
+        )
     }
     if (!activeMovie) {
-        return (<p>Loading...</p>)
+        return (<Spinner />)
     }
     const { title, overview, vote_average, release_date, poster_path, backdrop_path } = activeMovie!
 

@@ -1,9 +1,9 @@
-import { useMovesStore } from "../store"
+import { useMoviesStore } from "../store"
 import { getBackdropUrl } from "../helpers"
 import { Link } from "react-router-dom"
 
 export default function PeliculaMasVista() {
-    const { trendingMovies } = useMovesStore()
+    const { trendingMovies } = useMoviesStore()
 
     // Verificar que haya películas antes de renderizar
     if (trendingMovies.length === 0) {
@@ -14,7 +14,7 @@ export default function PeliculaMasVista() {
     const { title, overview, vote_average, release_date, backdrop_path } = movie
 
     return (
-        <div className="flex flex-col md:flex-row">
+        <div className="flex flex-col md:flex-row my-20">
             <div className="flex justify-center items-center" style={{ flexBasis: '40%' }}>
                 <img src={getBackdropUrl(backdrop_path)} alt="Movie poster" />
             </div>

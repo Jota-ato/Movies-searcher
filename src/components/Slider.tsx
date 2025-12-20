@@ -7,12 +7,12 @@ import { Link } from 'react-router-dom';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import { useMovesStore } from '../store';
+import { useMoviesStore } from '../store';
 import { getBackdropUrl } from '../helpers';
 
 const MySlider = () => {
 
-    const { trendingMovies, errorAtCall } = useMovesStore()
+    const { trendingMovies, errorAtCall } = useMoviesStore()
 
     if (errorAtCall || !trendingMovies.length) {
         return <p>Error al cargar películas...</p>

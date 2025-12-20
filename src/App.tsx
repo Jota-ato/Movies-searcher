@@ -1,13 +1,15 @@
 import BarraSuperior from "./components/BarraSuperior"
 import PeliculaMasVista from "./components/PeliculaMasVista"
 import MySlider from "./components/Slider"
-import { useMovesStore } from "./store"
+import { useMoviesStore } from "./store"
 import { useEffect } from "react"
 import { useLocation } from "react-router-dom"
+import Spinner from "./components/Spinner"
+import ErrorLoading from "./components/ErrorLoading"
 
 function App() {
 
-    const { getTrendingMovies, errorAtCall, resetError } = useMovesStore()
+    const { getTrendingMovies, errorAtCall, resetError, isLoading } = useMoviesStore()
     const location = useLocation()
 
     useEffect(() => {
@@ -17,15 +19,15 @@ function App() {
 
     return (
         <>
-            <div className="mb-20">
+            <div>
                 <BarraSuperior />
                 <div className="h-screen max-h-320">
                     <MySlider />
                 </div>
             </div>
-            {errorAtCall && <p className="text-center text-red-500">Error while loading the movies</p>}
+            {isLoading && <Spinner />}
+            {errorAtCall && <ErrorLoading />}
             {!errorAtCall && <PeliculaMasVista />}
-
         </>
     )
 }

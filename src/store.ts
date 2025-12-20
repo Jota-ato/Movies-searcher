@@ -1,21 +1,10 @@
 import { create } from 'zustand'
 import axios from 'axios'
 import z from 'zod'
-
-const movieSchema = z.object({
-    id: z.number(),
-    title: z.string(),
-    backdrop_path: z.string(),
-    poster_path: z.string(),
-    overview: z.string(),
-    release_date: z.string(),
-    vote_average: z.number(),
-    adult: z.boolean()
-})
-
-export type Movie = z.infer<typeof movieSchema>
+import { movieSchema, type Movie } from './types'
 
 type MovesState = {
+    isLoading: boolean
     errorAtCall: boolean
     api_key: string
     trendingMovies: Movie[]
@@ -25,25 +14,29 @@ type MovesState = {
     resetError: () => void
 }
 
-export const useMovesStore = create<MovesState>()(
+export const useMoviesStore = create<MovesState>()(
     (set, get) => ({
+        isLoading: false,
         errorAtCall: false,
         api_key: import.meta.env.VITE_API_KEY,
         trendingMovies: [],
         activeMovie: null,
         getTrendingMovies: async () => {
+            set({ isLoading: true })
             try {
                 const { data } = await axios(`https://api.themoviedb.org/3/trending/movie/week?api_key=${get().api_key}`)
 
-                const fiveMovies = z.array(movieSchema).parse(data.results.slice(0, 6))
-                console.log(fiveMovies)
-                set({ trendingMovies: fiveMovies })
+                const sixMovies = z.array(movieSchema).parse(data.results.slice(0, 6))
+                set({ trendingMovies: sixMovies })
             } catch (err) {
                 console.log(err)
                 set({ errorAtCall: true })
+            } finally {
+                set({ isLoading: false })
             }
         },
         getMovieById: async (id: string) => {
+            set({ isLoading: true })
             try {
                 const findUrl = `https://api.themoviedb.org/3/movie/${id}?api_key=${get().api_key}`
                 const { data } = await axios(findUrl)
@@ -51,11 +44,14 @@ export const useMovesStore = create<MovesState>()(
             } catch (err) {
                 console.log(err)
                 set({ errorAtCall: true })
+            } finally {
+                set({ isLoading: false })
             }
         },
         resetError: () => {
             set({ activeMovie: null })
             set({ errorAtCall: false })
+            set({ isLoading: false })
         },
     })
 )
