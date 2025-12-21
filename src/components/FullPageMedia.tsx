@@ -5,6 +5,8 @@ import { useParams, useLocation } from "react-router-dom";
 import { getBackdropUrl, isMovie } from "../helpers";
 import ErrorLoading from "./ErrorLoading";
 import Spinner from "./Spinner";
+import MediaSection from "./MediaSection";
+import FavoritesSection from "./FavoritesSection";
 import type { mediaType } from "../services/movieServices";
 
 export default function FullPageMedia() {
@@ -109,6 +111,12 @@ export default function FullPageMedia() {
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div>
+                {!errorAtCall && <MediaSection mediaType="movie" />}
+                {!errorAtCall && <MediaSection mediaType="tv" />}
+                {!errorAtCall && <FavoritesSection />}
             </div>
         </>
     )

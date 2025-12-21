@@ -32,9 +32,9 @@ function App() {
             {errorAtCall && <ErrorLoading />}
             {searchMediaResult.length && <SearchedMedia />}
             {!errorAtCall && !searchMediaResult.length && <PeliculaMasVista />}
-            {!errorAtCall && !searchMediaResult.length && <MediaSection mediaType="movie" />}
-            {!errorAtCall && !searchMediaResult.length && <MediaSection mediaType="tv" />}
-            {!errorAtCall && !searchMediaResult.length && <FavoritesSection />}
+            {!errorAtCall && <MediaSection mediaType="movie" />}
+            {!errorAtCall && <MediaSection mediaType="tv" />}
+            {!errorAtCall && <FavoritesSection />}
         </>
     )
 }
