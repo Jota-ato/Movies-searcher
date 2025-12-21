@@ -9,13 +9,31 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { useMoviesStore } from '../store';
 import { getBackdropUrl } from '../helpers';
+import ErrorLoading from './ErrorLoading';
+import Spinner from './Spinner';
 
 const MySlider = () => {
 
-    const { sixTrendingMovies: trendingMovies, errorAtCall } = useMoviesStore()
+    const { sixTrendingMovies: trendingMovies, errorAtCall, isLoading } = useMoviesStore()
 
-    if (errorAtCall || !trendingMovies.length) {
-        return <p>Error al cargar películas...</p>
+    if (errorAtCall) {
+        return (
+            <>
+                <div className='h-full w-full'>
+                    <ErrorLoading />
+                </div>
+            </>
+        )
+    }
+
+    if (isLoading && trendingMovies.length === 0) {
+        return (
+            <>
+                <div className='h-full w-full flex items-center justify-center'>
+                    <Spinner />
+                </div>
+            </>
+        )
     }
 
     return (

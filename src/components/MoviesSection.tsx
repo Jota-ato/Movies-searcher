@@ -1,10 +1,21 @@
 import { useMoviesStore } from "../store"
 import { getBackdropUrl } from "../helpers"
 import { Link } from "react-router-dom"
+import Spinner from "./Spinner"
 
 export default function MoviesSection() {
 
-    const { trendingMovies } = useMoviesStore()
+    const { trendingMovies, isLoading } = useMoviesStore()
+
+    if (isLoading) {
+        return (
+            <>
+                <div className='h-full w-full flex items-center justify-center'>
+                    <Spinner />
+                </div>
+            </>
+        )
+    }
 
     return (
         <div id="moviesSection" className="bg-surface p-8">

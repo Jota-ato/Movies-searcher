@@ -8,16 +8,18 @@ import Spinner from "./components/Spinner"
 import ErrorLoading from "./components/ErrorLoading"
 import MoviesSection from "./components/MoviesSection"
 import SearchedMovies from "./components/SearchedMovies"
+import SeriesSection from "./components/SeriesSection"
 
 function App() {
 
-    const { getTrendingMovies, errorAtCall, resetError, isLoading, searchMoviesResults } = useMoviesStore()
+    const { getTrendingMovies, getTrendingSeries, errorAtCall, resetError, isLoading, searchMoviesResults } = useMoviesStore()
     const location = useLocation()
 
     useEffect(() => {
         resetError()
         getTrendingMovies()
-    }, [location.pathname, getTrendingMovies, resetError])
+        getTrendingSeries()
+    }, [location.pathname, getTrendingMovies, resetError, getTrendingSeries])
 
     return (
         <>
@@ -32,6 +34,7 @@ function App() {
             {searchMoviesResults.results.length && <SearchedMovies />}
             {!errorAtCall && !searchMoviesResults.results.length && <PeliculaMasVista />}
             {!errorAtCall && !searchMoviesResults.results.length && <MoviesSection />}
+            {!errorAtCall && !searchMoviesResults.results.length && <SeriesSection />}
         </>
     )
 }
