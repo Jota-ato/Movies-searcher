@@ -7,19 +7,18 @@ import { useLocation } from "react-router-dom"
 import Spinner from "./components/Spinner"
 import ErrorLoading from "./components/ErrorLoading"
 import MoviesSection from "./components/MoviesSection"
-import SearchedMovies from "./components/SearchedMovies"
+import SearchedMedia from "./components/SearchedMovies"
 import SeriesSection from "./components/SeriesSection"
 
 function App() {
 
-    const { setTrending: getTrendingMovies, getTrendingSeries, errorAtCall, resetError, isLoading, searchMediaResult: searchMoviesResults } = useMoviesStore()
+    const { setTrending, errorAtCall, resetError, isLoading, searchMediaResult } = useMoviesStore()
     const location = useLocation()
 
     useEffect(() => {
         resetError()
-        getTrendingMovies()
-        getTrendingSeries()
-    }, [location.pathname, getTrendingMovies, resetError, getTrendingSeries])
+        setTrending()
+    }, [location.pathname, setTrending, resetError])
 
     return (
         <>
@@ -31,10 +30,10 @@ function App() {
             </div>
             {isLoading && <Spinner />}
             {errorAtCall && <ErrorLoading />}
-            {searchMoviesResults.results.length && <SearchedMovies />}
-            {!errorAtCall && !searchMoviesResults.results.length && <PeliculaMasVista />}
-            {!errorAtCall && !searchMoviesResults.results.length && <MoviesSection />}
-            {!errorAtCall && !searchMoviesResults.results.length && <SeriesSection />}
+            {searchMediaResult.length && <SearchedMedia />}
+            {!errorAtCall && !searchMediaResult.length && <PeliculaMasVista />}
+            {!errorAtCall && !searchMediaResult.length && <MoviesSection />}
+            {!errorAtCall && !searchMediaResult.length && <SeriesSection />}
         </>
     )
 }

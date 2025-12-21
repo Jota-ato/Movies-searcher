@@ -3,14 +3,13 @@ import { useMoviesStore } from "../store"
 import { useState } from "react"
 
 export default function UpperBar() {
-    const { searchMedia: searchMovies } = useMoviesStore()
+    const { searchMulti } = useMoviesStore()
     const [searchQuery, setSearchQuery] = useState("")
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value
-        console.log(value)
         setSearchQuery(value)
-        searchMovies(value)
+        searchMulti(value)
     }
 
     return (

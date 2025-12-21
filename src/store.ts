@@ -15,6 +15,7 @@ type MovesState = {
     setTrending: () => Promise<void>
     getMediaById: (id: number, type: mediaType) => Promise<void>
     searchMedia: (query: string, type: mediaType) => Promise<void>
+    searchMulti: (query: string) => Promise<void>
     resetError: () => void
 }
 
@@ -63,6 +64,21 @@ export const useMoviesStore = create<MovesState>()(
             set({ isSearching: true })
             try {
                 const media = await moviesServices.searchMedia(query, type)
+                set({ searchMediaResult: media })
+            } catch (err) {
+                console.log(err)
+                set({ errorAtCall: true })
+            } finally {
+                set({ isSearching: false })
+                set({ isLoading: false })
+            }
+        },
+        searchMulti: async (query: string) => {
+            get().resetError()
+            set({ isLoading: true })
+            set({ isSearching: true })
+            try {
+                const media = await moviesServices.searchMulti(query)
                 set({ searchMediaResult: media })
             } catch (err) {
                 console.log(err)

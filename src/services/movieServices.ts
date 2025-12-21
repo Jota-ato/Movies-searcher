@@ -30,5 +30,14 @@ export const moviesServices = {
         })
         const media = z.array(schemas[type]).parse(data.results)
         return media
+    },
+    searchMulti: async (query: string) => {
+        const [moviesRes, seriesRes] = await Promise.all([
+            tmdbApi.get(`/search/movie`, { params: { query } }),
+            tmdbApi.get(`/search/tv`, { params: { query } })
+        ]);
+        const movies = z.array(schemas.movie).parse(moviesRes.data.results)
+        const series = z.array(schemas.tv).parse(seriesRes.data.results)
+        return [...movies, ...series]
     }
 }

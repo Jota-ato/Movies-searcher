@@ -21,7 +21,7 @@ export default function SeriesSection() {
                 <h2 className="text-4xl font-bold mb-8 text-text-muted">Results</h2>
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                     {trendingSeries.map(serie => (
-                        <Link to={`/series/${serie.id}`} key={serie.id}>
+                        <Link to={`/tv/${serie.id}`} key={serie.id}>
                             <div>
                                 <img src={getBackdropUrl(serie.poster_path)} alt={serie.name} className="h-full w-full object-cover" />
                             </div>

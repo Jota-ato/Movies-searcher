@@ -1,10 +1,10 @@
 import { useMoviesStore } from "../store"
 import { Link } from "react-router-dom"
-import { getBackdropUrl } from "../helpers"
+import { getBackdropUrl, isMovie } from "../helpers"
 import Spinner from "./Spinner"
 
-export default function SearchedMovies() {
-    const { searchMediaResult: searchMoviesResults, isLoading } = useMoviesStore()
+export default function SearchedMedia() {
+    const { searchMediaResult, isLoading } = useMoviesStore()
 
     if (isLoading) {
         return (
@@ -20,12 +20,18 @@ export default function SearchedMovies() {
             <div id="moviesSection" className="bg-surface p-8">
                 <h2 className="text-4xl font-bold mb-8 text-text-muted">Results</h2>
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {searchMoviesResults.results.map(movie => (
-                        <Link to={`/movie/${movie.id}`} key={movie.id}>
-                            <div>
-                                <img src={getBackdropUrl(movie.poster_path)} alt={movie.title} className="h-full w-full object-cover" />
-                            </div>
-                        </Link>
+                    {searchMediaResult.map(media => (
+                        isMovie(media) ?
+                            <Link to={`/movie/${media.id}`} key={media.id}>
+                                <div>
+                                    <img src={getBackdropUrl(media.poster_path)} alt={media.title} className="h-full w-full object-cover" />
+                                </div>
+                            </Link> :
+                            <Link to={`/tv/${media.id}`} key={media.id}>
+                                <div>
+                                    <img src={getBackdropUrl(media.poster_path)} alt={media.name} className="h-full w-full object-cover" />
+                                </div>
+                            </Link>
                     ))}
                 </div>
             </div>

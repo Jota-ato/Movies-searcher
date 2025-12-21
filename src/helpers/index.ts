@@ -1,3 +1,4 @@
+import type { Movie, Series } from "../types"
 
 export const getBackdropUrl = (backdrop_path: string | null) => {
     if (!backdrop_path) {
@@ -5,3 +6,5 @@ export const getBackdropUrl = (backdrop_path: string | null) => {
     }
     return `https://image.tmdb.org/t/p/original${backdrop_path}`
 }
+
+export const isMovie = (media: Movie | Series) => 'title' in media

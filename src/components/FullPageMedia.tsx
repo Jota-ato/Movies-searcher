@@ -1,20 +1,24 @@
 import { useEffect } from "react";
 import { useMoviesStore } from "../store";
 import UpperBar from "./UpperBar";
-import { useParams } from "react-router-dom";
-import { getBackdropUrl } from "../helpers";
+import { useParams, useLocation } from "react-router-dom";
+import { getBackdropUrl, isMovie } from "../helpers";
 import ErrorLoading from "./ErrorLoading";
 import Spinner from "./Spinner";
+import type { mediaType } from "../services/movieServices";
 
-export default function FullPageSerie() {
+export default function FullPageMedia() {
 
     const { id } = useParams()
-    const { getSeriesById, errorAtCall, activeSeries } = useMoviesStore()
+    const location = useLocation()
+    const { getMediaById, errorAtCall, activeMedia } = useMoviesStore()
 
+    // Determine media type from URL path
+    const type: mediaType = location.pathname.startsWith('/tv') ? 'tv' : 'movie'
 
     useEffect(() => {
-        getSeriesById(id as string)
-    }, [id, getSeriesById])
+        getMediaById(Number(id!), type)
+    }, [id, type, getMediaById])
 
     if (!id || errorAtCall) {
         return (
@@ -24,10 +28,12 @@ export default function FullPageSerie() {
             </>
         )
     }
-    if (!activeSeries) {
+    if (!activeMedia) {
         return (<Spinner />)
     }
-    const { name, overview, vote_average, first_air_date, poster_path, backdrop_path } = activeSeries!
+
+    const { overview, vote_average, poster_path, backdrop_path } = activeMedia
+    const isMovieMedia = isMovie(activeMedia)
 
     return (
         <>
@@ -44,7 +50,7 @@ export default function FullPageSerie() {
                 <div className="absolute inset-0 bg-linear-to-t from-background via-background/80 to-transparent" />
                 <div className="relative z-10 h-full flex items-end justify-center pb-12">
                     <h1 className="text-5xl md:text-7xl font-black text-white text-center px-8 drop-shadow-2xl">
-                        {name}
+                        {isMovieMedia ? activeMedia.title : activeMedia.name}
                     </h1>
                 </div>
             </div>
@@ -58,7 +64,7 @@ export default function FullPageSerie() {
                             <img
                                 className="rounded-2xl shadow-2xl w-full transform transition-transform duration-300 hover:scale-105"
                                 src={getBackdropUrl(poster_path!)}
-                                alt={`${name} poster`}
+                                alt={`${isMovieMedia ? activeMedia.title : activeMedia.name} poster`}
                             />
                             {/* Rating badge */}
                             <div className="mt-6 bg-linear-to-r from-primary to-primary-hover rounded-xl p-6 shadow-lg">
@@ -86,11 +92,11 @@ export default function FullPageSerie() {
 
                         {/* Statistics */}
                         <div className="bg-surface rounded-2xl p-8 shadow-lg">
-                            <h2 className="text-3xl font-bold mb-6 text-primary">Series Details</h2>
+                            <h2 className="text-3xl font-bold mb-6 text-primary">Movie Details</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="bg-background rounded-xl p-6 border-l-4 border-primary transform transition-all duration-300 hover:scale-105 hover:shadow-md">
                                     <p className="text-text-muted text-sm uppercase tracking-wide mb-2">Release Date</p>
-                                    <p className="text-2xl font-bold">{first_air_date}</p>
+                                    <p className="text-2xl font-bold">{isMovieMedia ? activeMedia.release_date : activeMedia.first_air_date}</p>
                                 </div>
                                 <div className="bg-background rounded-xl p-6 border-l-4 border-primary transform transition-all duration-300 hover:scale-105 hover:shadow-md">
                                     <p className="text-text-muted text-sm uppercase tracking-wide mb-2">Average Rating</p>
