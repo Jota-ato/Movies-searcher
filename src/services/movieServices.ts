@@ -18,7 +18,7 @@ export const moviesServices = {
         ]);
         const movies = z.array(schemas.movie).parse(moviesRes.data.results)
         const series = z.array(schemas.tv).parse(seriesRes.data.results)
-        return { movies, sixMovies: movies.slice(0, 6), series }
+        return { movies: movies.slice(0, 8), sixMovies: movies.slice(0, 6), series: series.slice(0, 8) }
     },
     getById: async (id: number, type: mediaType) => {
         const { data } = await tmdbApi.get(`/${type}/${id}`)

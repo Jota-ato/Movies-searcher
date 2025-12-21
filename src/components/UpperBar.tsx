@@ -16,7 +16,7 @@ export default function UpperBar() {
         <div className="p-8 flex flex-col md:flex-row items-center justify-between gap-8 bg-surface">
             <Link to="/" className="text-[2.6rem] font-black">Movies Searcher</Link>
             <nav className="flex flex-col md:flex-row items-center gap-8">
-                <a className="text-2xl font-medium cursor-pointer hover:text-primary transition-colors" href="#top">Home</a>
+                <Link className="text-2xl font-medium cursor-pointer hover:text-primary transition-colors" to="/">Home</Link>
                 <a className="text-2xl font-medium cursor-pointer hover:text-primary transition-colors" href="#moviesSection">Movies</a>
                 <a className="text-2xl font-medium cursor-pointer hover:text-primary transition-colors" href="#seriesSection">Series</a>
                 <a className="text-2xl font-medium cursor-pointer hover:text-primary transition-colors" href="#favoritesSection">Favorites</a>
