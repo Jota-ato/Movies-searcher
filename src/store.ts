@@ -1,7 +1,6 @@
 import { create } from 'zustand'
-import axios from 'axios'
-import z from 'zod'
-import { movieSchema, searchMovieResultSchema, type Movie, type SearchMovieResult, searchSeriesResultSchema, type Series } from './types'
+import { moviesServices, type mediaType } from './services/movieServices'
+import { type Movie, type Series } from './types'
 
 type MovesState = {
     isSearching: boolean
@@ -11,14 +10,11 @@ type MovesState = {
     sixTrendingMovies: Movie[]
     trendingMovies: Movie[]
     trendingSeries: Series[]
-    searchMoviesResults: SearchMovieResult
-    activeMovie: Movie | null
-    activeSeries: Series | null
-    getTrendingMovies: () => Promise<void>
-    getMovieById: (id: string) => Promise<void>
-    searchMovies: (query: string) => Promise<void>
-    getTrendingSeries: () => Promise<void>
-    getSeriesById: (id: string) => Promise<void>
+    searchMediaResult: (Movie | Series)[]
+    activeMedia: Movie | Series | null
+    setTrending: () => Promise<void>
+    getMediaById: (id: number, type: mediaType) => Promise<void>
+    searchMedia: (query: string, type: mediaType) => Promise<void>
     resetError: () => void
 }
 
@@ -31,19 +27,16 @@ export const useMoviesStore = create<MovesState>()(
         sixTrendingMovies: [],
         trendingMovies: [],
         trendingSeries: [],
-        searchMoviesResults: { results: [], total_pages: 0, total_results: 0, page: 0 },
-        activeMovie: null,
-        activeSeries: null,
-        getTrendingMovies: async () => {
+        searchMediaResult: [],
+        activeMedia: null,
+        setTrending: async () => {
             get().resetError()
             set({ isLoading: true })
             try {
-                const { data } = await axios(`https://api.themoviedb.org/3/trending/movie/week?api_key=${get().api_key}`)
-
-                const TrendingMovies = z.array(movieSchema).parse(data.results)
-                const sixMovies = TrendingMovies.slice(0, 6)
+                const { movies, sixMovies, series } = await moviesServices.getTrending()
                 set({ sixTrendingMovies: sixMovies })
-                set({ trendingMovies: TrendingMovies })
+                set({ trendingMovies: movies })
+                set({ trendingSeries: series })
             } catch (err) {
                 console.log(err)
                 set({ errorAtCall: true })
@@ -51,13 +44,12 @@ export const useMoviesStore = create<MovesState>()(
                 set({ isLoading: false })
             }
         },
-        getMovieById: async (id: string) => {
+        getMediaById: async (id: number, type: mediaType) => {
             get().resetError()
             set({ isLoading: true })
             try {
-                const findUrl = `https://api.themoviedb.org/3/movie/${id}?api_key=${get().api_key}`
-                const { data } = await axios(findUrl)
-                set({ activeMovie: data })
+                const media = await moviesServices.getById(id, type)
+                set({ activeMedia: media })
             } catch (err) {
                 console.log(err)
                 set({ errorAtCall: true })
@@ -65,32 +57,13 @@ export const useMoviesStore = create<MovesState>()(
                 set({ isLoading: false })
             }
         },
-        getSeriesById: async (id: string) => {
-            get().resetError()
-            set({ isLoading: true })
-            try {
-                const findUrl = `https://api.themoviedb.org/3/tv/${id}?api_key=${get().api_key}`
-                const { data } = await axios(findUrl)
-                set({ activeSeries: data })
-            } catch (err) {
-                console.log(err)
-                set({ errorAtCall: true })
-            } finally {
-                set({ isLoading: false })
-            }
-        },
-        searchMovies: async (query: string) => {
+        searchMedia: async (query: string, type: mediaType) => {
             get().resetError()
             set({ isLoading: true })
             set({ isSearching: true })
             try {
-                const searchUrl = `https://api.themoviedb.org/3/search/movie?include_adult=false&language=en-US&page=1&api_key=${get().api_key}&query=${query}`;
-                console.log(query)
-
-                const { data } = await axios(searchUrl)
-                const result = searchMovieResultSchema.parse(data)
-                console.log(result)
-                set({ searchMoviesResults: result })
+                const media = await moviesServices.searchMedia(query, type)
+                set({ searchMediaResult: media })
             } catch (err) {
                 console.log(err)
                 set({ errorAtCall: true })
@@ -99,27 +72,8 @@ export const useMoviesStore = create<MovesState>()(
                 set({ isLoading: false })
             }
         },
-        getTrendingSeries: async () => {
-            get().resetError()
-            set({ isLoading: true })
-            try {
-                const tvUrl = `https://api.themoviedb.org/3/discover/tv?api_key=${get().api_key}`
-                const { data } = await axios(tvUrl)
-                console.log(data)
-
-                const result = searchSeriesResultSchema.parse(data)
-                console.log(result)
-                set({ trendingSeries: result.results })
-                console.log(get().trendingSeries)
-            } catch (err) {
-                console.log(err)
-                set({ errorAtCall: true })
-            } finally {
-                set({ isLoading: false })
-            }
-        },
         resetError: () => {
-            set({ activeMovie: null })
+            set({ activeMedia: null })
             set({ errorAtCall: false })
             set({ isLoading: false })
         },

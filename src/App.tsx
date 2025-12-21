@@ -12,7 +12,7 @@ import SeriesSection from "./components/SeriesSection"
 
 function App() {
 
-    const { getTrendingMovies, getTrendingSeries, errorAtCall, resetError, isLoading, searchMoviesResults } = useMoviesStore()
+    const { setTrending: getTrendingMovies, getTrendingSeries, errorAtCall, resetError, isLoading, searchMediaResult: searchMoviesResults } = useMoviesStore()
     const location = useLocation()
 
     useEffect(() => {

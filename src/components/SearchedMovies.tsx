@@ -4,7 +4,7 @@ import { getBackdropUrl } from "../helpers"
 import Spinner from "./Spinner"
 
 export default function SearchedMovies() {
-    const { searchMoviesResults, isLoading } = useMoviesStore()
+    const { searchMediaResult: searchMoviesResults, isLoading } = useMoviesStore()
 
     if (isLoading) {
         return (

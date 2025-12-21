@@ -9,7 +9,7 @@ import Spinner from "./Spinner";
 export default function FullPageMovie() {
 
     const { id } = useParams()
-    const { getMovieById, errorAtCall, activeMovie } = useMoviesStore()
+    const { getMediaById: getMovieById, errorAtCall, activeMovie } = useMoviesStore()
 
 
     useEffect(() => {
