@@ -6,9 +6,9 @@ import { useEffect } from "react"
 import { useLocation } from "react-router-dom"
 import Spinner from "./components/Spinner"
 import ErrorLoading from "./components/ErrorLoading"
-import MoviesSection from "./components/MoviesSection"
 import SearchedMedia from "./components/SearchedMovies"
-import SeriesSection from "./components/SeriesSection"
+import MediaSection from "./components/MediaSection"
+import FavoritesSection from "./components/FavoritesSection"
 
 function App() {
 
@@ -22,7 +22,7 @@ function App() {
 
     return (
         <>
-            <div>
+            <div id="top">
                 <UpperBar />
                 <div className="h-screen max-h-320">
                     <MySlider />
@@ -32,8 +32,9 @@ function App() {
             {errorAtCall && <ErrorLoading />}
             {searchMediaResult.length && <SearchedMedia />}
             {!errorAtCall && !searchMediaResult.length && <PeliculaMasVista />}
-            {!errorAtCall && !searchMediaResult.length && <MoviesSection />}
-            {!errorAtCall && !searchMediaResult.length && <SeriesSection />}
+            {!errorAtCall && !searchMediaResult.length && <MediaSection mediaType="movie" />}
+            {!errorAtCall && !searchMediaResult.length && <MediaSection mediaType="tv" />}
+            {!errorAtCall && !searchMediaResult.length && <FavoritesSection />}
         </>
     )
 }

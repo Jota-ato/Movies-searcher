@@ -11,7 +11,7 @@ export default function FullPageMedia() {
 
     const { id } = useParams()
     const location = useLocation()
-    const { getMediaById, errorAtCall, activeMedia } = useMoviesStore()
+    const { getMediaById, errorAtCall, activeMedia, addToFavorites } = useMoviesStore()
 
     // Determine media type from URL path
     const type: mediaType = location.pathname.startsWith('/tv') ? 'tv' : 'movie'
@@ -88,6 +88,9 @@ export default function FullPageMedia() {
                         <div className="bg-surface rounded-2xl p-8 shadow-lg">
                             <h2 className="text-3xl font-bold mb-4 text-primary">Overview</h2>
                             <p className="text-xl leading-relaxed text-text-main">{overview}</p>
+                            <button
+                                onClick={() => addToFavorites(activeMedia!)}
+                                className="bg-danger hover:bg-danger-hover text-white rounded-xl p-6 shadow-lg my-8 cursor-pointer">Add to favorites</button>
                         </div>
 
                         {/* Statistics */}

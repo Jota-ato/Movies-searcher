@@ -10,12 +10,14 @@ type MovesState = {
     sixTrendingMovies: Movie[]
     trendingMovies: Movie[]
     trendingSeries: Series[]
+    favoriteMedia: (Movie | Series)[]
     searchMediaResult: (Movie | Series)[]
     activeMedia: Movie | Series | null
     setTrending: () => Promise<void>
     getMediaById: (id: number, type: mediaType) => Promise<void>
     searchMedia: (query: string, type: mediaType) => Promise<void>
     searchMulti: (query: string) => Promise<void>
+    addToFavorites: (media: Movie | Series) => void
     resetError: () => void
 }
 
@@ -28,6 +30,7 @@ export const useMoviesStore = create<MovesState>()(
         sixTrendingMovies: [],
         trendingMovies: [],
         trendingSeries: [],
+        favoriteMedia: [],
         searchMediaResult: [],
         activeMedia: null,
         setTrending: async () => {
@@ -86,6 +89,14 @@ export const useMoviesStore = create<MovesState>()(
             } finally {
                 set({ isSearching: false })
                 set({ isLoading: false })
+            }
+        },
+        addToFavorites: (media: Movie | Series) => {
+            const { favoriteMedia } = get()
+            if (favoriteMedia.some(m => m.id === media.id)) {
+                set({ favoriteMedia: favoriteMedia.filter(m => m.id !== media.id) })
+            } else {
+                set({ favoriteMedia: [...favoriteMedia, media] })
             }
         },
         resetError: () => {
