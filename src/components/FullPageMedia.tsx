@@ -13,10 +13,12 @@ export default function FullPageMedia() {
 
     const { id } = useParams()
     const location = useLocation()
-    const { getMediaById, errorAtCall, activeMedia, addToFavorites, trendingMovies, trendingSeries, setTrending } = useMoviesStore()
+    const { getMediaById, errorAtCall, activeMedia, addToFavorites, trendingMovies, trendingSeries, setTrending, favoriteMedia } = useMoviesStore()
 
     // Determine media type from URL path
     const type: mediaType = location.pathname.startsWith('/tv') ? 'tv' : 'movie'
+    const isMediaInFavorites = favoriteMedia.some(media => media.id === +id!)
+
     useEffect(() => {
         getMediaById(Number(id!), type)
         if (trendingMovies.length === 0 || trendingSeries.length === 0) {
@@ -94,7 +96,7 @@ export default function FullPageMedia() {
                             <p className="text-xl leading-relaxed text-text-main">{overview}</p>
                             <button
                                 onClick={() => addToFavorites(activeMedia!)}
-                                className="bg-danger hover:bg-danger-hover text-white rounded-xl p-6 shadow-lg my-8 cursor-pointer">Add to favorites</button>
+                                className="bg-danger hover:bg-danger-hover text-white rounded-xl p-6 shadow-lg my-8 cursor-pointer">{isMediaInFavorites ? 'Remove from favorites' : 'Add to favorites'}</button>
                         </div>
 
                         {/* Statistics */}
