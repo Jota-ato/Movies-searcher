@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { moviesServices, type mediaType } from './services/movieServices'
 import { type Movie, type Series } from './types'
+import { persist } from 'zustand/middleware'
 
 type MovesState = {
     isSearching: boolean
@@ -22,7 +23,7 @@ type MovesState = {
 }
 
 export const useMoviesStore = create<MovesState>()(
-    (set, get) => ({
+    persist((set, get) => ({
         isSearching: false,
         isLoading: false,
         errorAtCall: false,
@@ -104,5 +105,10 @@ export const useMoviesStore = create<MovesState>()(
             set({ errorAtCall: false })
             set({ isLoading: false })
         },
+    }), {
+        name: 'movie-storage',
+        partialize: (state) => ({
+            favoriteMedia: state.favoriteMedia,
+        }),
     })
 )

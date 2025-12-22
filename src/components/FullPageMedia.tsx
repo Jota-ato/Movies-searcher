@@ -13,14 +13,16 @@ export default function FullPageMedia() {
 
     const { id } = useParams()
     const location = useLocation()
-    const { getMediaById, errorAtCall, activeMedia, addToFavorites } = useMoviesStore()
+    const { getMediaById, errorAtCall, activeMedia, addToFavorites, trendingMovies, trendingSeries, setTrending } = useMoviesStore()
 
     // Determine media type from URL path
     const type: mediaType = location.pathname.startsWith('/tv') ? 'tv' : 'movie'
-
     useEffect(() => {
         getMediaById(Number(id!), type)
-    }, [id, type, getMediaById])
+        if (trendingMovies.length === 0 || trendingSeries.length === 0) {
+            setTrending()
+        }
+    }, [id, type, getMediaById, trendingMovies.length, trendingSeries.length, setTrending])
 
     if (!id || errorAtCall) {
         return (
