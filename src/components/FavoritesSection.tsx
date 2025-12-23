@@ -17,7 +17,7 @@ export default function MediaSection() {
 
     return (
         <>
-            <section id="favoritesSection" className="bg-surface p-8">
+            <section id="favoritesSection" className="bg-surface">
                 <MediaGrid
                     mediaList={favoriteMedia}
                     title="Favorites"

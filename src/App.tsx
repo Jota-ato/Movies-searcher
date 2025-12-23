@@ -1,5 +1,5 @@
 import UpperBar from "./components/UpperBar"
-import PeliculaMasVista from "./components/PeliculaMasVista"
+import MostViewMovie from "./components/PeliculaMasVista"
 import MySlider from "./components/Slider"
 import { useMoviesStore } from "./store"
 import { useEffect } from "react"
@@ -31,7 +31,7 @@ function App() {
             {isLoading && <Spinner />}
             {errorAtCall && <ErrorLoading />}
             {searchMediaResult.length && <SearchedMedia />}
-            {!errorAtCall && !searchMediaResult.length && <PeliculaMasVista />}
+            {!errorAtCall && !searchMediaResult.length && <MostViewMovie />}
             {!errorAtCall && <MediaSection mediaType="movie" />}
             {!errorAtCall && <MediaSection mediaType="tv" />}
             {!errorAtCall && <FavoritesSection />}
