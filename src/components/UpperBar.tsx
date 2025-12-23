@@ -1,15 +1,20 @@
 import { Link } from "react-router-dom"
 import { useMoviesStore } from "../store"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useDebounce } from "../hooks/useDebounce"
 
 export default function UpperBar() {
     const { searchMulti } = useMoviesStore()
     const [searchQuery, setSearchQuery] = useState("")
+    const debouncedSearchQuery = useDebounce(searchQuery, 500)
+
+    useEffect(() => {
+        searchMulti(debouncedSearchQuery)
+    }, [debouncedSearchQuery, searchMulti])
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value
         setSearchQuery(value)
-        searchMulti(value)
     }
 
     return (
