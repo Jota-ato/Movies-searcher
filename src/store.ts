@@ -5,7 +5,8 @@ import { persist } from 'zustand/middleware'
 
 type MovesState = {
     isSearching: boolean
-    isLoading: boolean
+    isLoadingMedia: boolean
+    isLoadingTrending: boolean
     errorAtCall: boolean
     api_key: string
     sixTrendingMovies: Movie[]
@@ -25,7 +26,8 @@ type MovesState = {
 export const useMoviesStore = create<MovesState>()(
     persist((set, get) => ({
         isSearching: false,
-        isLoading: false,
+        isLoadingMedia: false,
+        isLoadingTrending: false,
         errorAtCall: false,
         api_key: import.meta.env.VITE_API_KEY,
         sixTrendingMovies: [],
@@ -35,8 +37,7 @@ export const useMoviesStore = create<MovesState>()(
         searchMediaResult: [],
         activeMedia: null,
         setTrending: async () => {
-            get().resetError()
-            set({ isLoading: true })
+            set({ errorAtCall: false, isLoadingTrending: true })
             try {
                 const { movies, sixMovies, series } = await moviesServices.getTrending()
                 set({ sixTrendingMovies: sixMovies })
@@ -46,12 +47,11 @@ export const useMoviesStore = create<MovesState>()(
                 console.log(err)
                 set({ errorAtCall: true })
             } finally {
-                set({ isLoading: false })
+                set({ isLoadingTrending: false })
             }
         },
         getMediaById: async (id: number, type: mediaType) => {
-            get().resetError()
-            set({ isLoading: true })
+            set({ errorAtCall: false, activeMedia: null, isLoadingMedia: true })
             try {
                 const media = await moviesServices.getById(id, type)
                 set({ activeMedia: media })
@@ -59,12 +59,12 @@ export const useMoviesStore = create<MovesState>()(
                 console.log(err)
                 set({ errorAtCall: true })
             } finally {
-                set({ isLoading: false })
+                set({ isLoadingMedia: false })
             }
         },
         searchMedia: async (query: string, type: mediaType) => {
             get().resetError()
-            set({ isLoading: true })
+            set({ isLoadingMedia: true })
             set({ isSearching: true })
             try {
                 const media = await moviesServices.searchMedia(query, type)
@@ -74,12 +74,12 @@ export const useMoviesStore = create<MovesState>()(
                 set({ errorAtCall: true })
             } finally {
                 set({ isSearching: false })
-                set({ isLoading: false })
+                set({ isLoadingMedia: false })
             }
         },
         searchMulti: async (query: string) => {
             get().resetError()
-            set({ isLoading: true })
+            set({ isLoadingMedia: true })
             set({ isSearching: true })
             try {
                 const media = await moviesServices.searchMulti(query)
@@ -89,7 +89,7 @@ export const useMoviesStore = create<MovesState>()(
                 set({ errorAtCall: true })
             } finally {
                 set({ isSearching: false })
-                set({ isLoading: false })
+                set({ isLoadingMedia: false })
             }
         },
         addToFavorites: (media: Movie | Series) => {
@@ -101,9 +101,8 @@ export const useMoviesStore = create<MovesState>()(
             }
         },
         resetError: () => {
-            set({ activeMedia: null })
             set({ errorAtCall: false })
-            set({ isLoading: false })
+            set({ isLoadingMedia: false })
         },
     }), {
         name: 'movie-storage',

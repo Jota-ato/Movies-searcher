@@ -1,5 +1,5 @@
 import UpperBar from "./components/UpperBar"
-import MostViewMovie from "./components/PeliculaMasVista"
+import MostViewMovie from "./components/MostViewMovie"
 import MySlider from "./components/Slider"
 import { useMoviesStore } from "./store"
 import { useEffect } from "react"
@@ -12,7 +12,7 @@ import FavoritesSection from "./components/FavoritesSection"
 
 function App() {
 
-    const { setTrending, errorAtCall, resetError, isLoading, searchMediaResult } = useMoviesStore()
+    const { setTrending, errorAtCall, resetError, isLoadingMedia, searchMediaResult } = useMoviesStore()
     const location = useLocation()
 
     useEffect(() => {
@@ -28,7 +28,7 @@ function App() {
                     <MySlider />
                 </div>
             </div>
-            {isLoading && <Spinner />}
+            {isLoadingMedia && <Spinner />}
             {errorAtCall && <ErrorLoading />}
             {searchMediaResult.length && <SearchedMedia />}
             {!errorAtCall && !searchMediaResult.length && <MostViewMovie />}

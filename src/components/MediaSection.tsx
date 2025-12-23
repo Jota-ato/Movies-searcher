@@ -7,9 +7,9 @@ type MediaSectionProps = {
 }
 
 export default function MediaSection({ mediaType }: MediaSectionProps) {
-    const { trendingSeries, isLoading, trendingMovies } = useMoviesStore()
+    const { trendingSeries, isLoadingTrending, trendingMovies } = useMoviesStore()
 
-    if (isLoading) {
+    if (isLoadingTrending) {
         return (
             <>
                 <div className='h-full w-full flex items-center justify-center'>

@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { useMoviesStore } from "../store";
-import UpperBar from "./UpperBar";
 import { useParams, useLocation } from "react-router-dom";
+import { useMoviesStore } from "../store";
 import { getBackdropUrl, isMovie } from "../helpers";
+import UpperBar from "./UpperBar";
 import ErrorLoading from "./ErrorLoading";
 import Spinner from "./Spinner";
 import MediaSection from "./MediaSection";
@@ -10,118 +10,120 @@ import FavoritesSection from "./FavoritesSection";
 import type { mediaType } from "../services/movieServices";
 
 export default function FullPageMedia() {
+    const { id } = useParams();
+    const location = useLocation();
 
-    const { id } = useParams()
-    const location = useLocation()
-    const { getMediaById, errorAtCall, activeMedia, addToFavorites, trendingMovies, trendingSeries, setTrending, favoriteMedia, isLoading } = useMoviesStore()
+    // Selectores Atómicos (Best Practice para evitar re-renders innecesarios)
+    const activeMedia = useMoviesStore(state => state.activeMedia);
+    const isLoadingMedia = useMoviesStore(state => state.isLoadingMedia);
+    const errorAtCall = useMoviesStore(state => state.errorAtCall);
+    const getMediaById = useMoviesStore(state => state.getMediaById);
+    const setTrending = useMoviesStore(state => state.setTrending);
+    const hasTrendingData = useMoviesStore(state => state.trendingMovies.length > 0);
+    const addToFavorites = useMoviesStore(state => state.addToFavorites);
+    const favoriteMedia = useMoviesStore(state => state.favoriteMedia);
 
-    // Determine media type from URL path
-    const type: mediaType = location.pathname.startsWith('/tv') ? 'tv' : 'movie'
-    const isMediaInFavorites = favoriteMedia.some(media => media.id === +id!)
+    // Derivación de estado
+    const type: mediaType = location.pathname.startsWith('/tv') ? 'tv' : 'movie';
+    const isFavorite = favoriteMedia.some(m => m.id === Number(id));
 
+    // EFECTO 1: Carga de la película/serie específica
     useEffect(() => {
-        getMediaById(Number(id!), type)
-        if (trendingMovies.length === 0 || trendingSeries.length === 0) {
-            setTrending()
+        if (id) {
+            getMediaById(Number(id), type);
         }
-    }, [id, type, getMediaById, trendingMovies.length, trendingSeries.length, setTrending])
+        // Solo dependemos de id y type. 
+        // getMediaById es estable si viene del store de Zustand.
+    }, [id, type, getMediaById]);
 
-    if (!id || errorAtCall || !activeMedia) {
+    // EFECTO 2: Hidratación de datos globales (Trending) si no existen
+    useEffect(() => {
+        if (!hasTrendingData) {
+            setTrending();
+        }
+    }, [hasTrendingData, setTrending]);
+
+    // Manejo de Error Crítico
+    if (errorAtCall) {
         return (
-            <>
+            <main className="min-h-screen bg-background">
                 <UpperBar />
                 <ErrorLoading />
-            </>
-        )
+            </main>
+        );
     }
-    if (isLoading) {
-        return (<Spinner />)
-    }
-
-    const { overview, vote_average, poster_path, backdrop_path } = activeMedia
-    const isMovieMedia = isMovie(activeMedia)
 
     return (
-        <>
-            <div>
-                <UpperBar />
-            </div>
+        <main className="min-h-screen bg-background text-white">
+            <UpperBar />
 
-            {/* Hero section with backdrop */}
-            <div className="relative w-full h-96 mb-12 overflow-hidden">
-                <div
-                    className="absolute inset-0 bg-cover bg-center bg-no-repeat blur-sm scale-110"
-                    style={{ backgroundImage: `url(${getBackdropUrl(backdrop_path!)})` }}
-                />
-                <div className="absolute inset-0 bg-linear-to-t from-background via-background/80 to-transparent" />
-                <div className="relative z-10 h-full flex items-end justify-center pb-12">
-                    <h1 className="text-5xl md:text-7xl font-black text-white text-center px-8 drop-shadow-2xl">
-                        {isMovieMedia ? activeMedia.title : activeMedia.name}
-                    </h1>
-                </div>
-            </div>
-
-            {/* Main content */}
-            <div className="container mx-auto px-8 pb-16">
-                <div className="flex flex-col lg:flex-row gap-12">
-                    {/* Poster */}
-                    <div className="lg:w-1/3">
-                        <div className="sticky top-8">
+            {/* CONTENEDOR PRINCIPAL: Aquí controlamos la carga sin desmontar el componente */}
+            <div className="relative min-h-[60vh]">
+                {isLoadingMedia || !activeMedia ? (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <Spinner />
+                    </div>
+                ) : (
+                    <div className="animate-in fade-in duration-700">
+                        {/* Hero Section con Backdrop */}
+                        <div className="relative h-[50vh] md:h-[70vh] w-full">
                             <img
-                                className="rounded-2xl shadow-2xl w-full transform transition-transform duration-300 hover:scale-105"
-                                src={getBackdropUrl(poster_path!)}
-                                alt={`${isMovieMedia ? activeMedia.title : activeMedia.name} poster`}
+                                src={getBackdropUrl(activeMedia.backdrop_path || activeMedia.poster_path)}
+                                alt={isMovie(activeMedia) ? activeMedia.title : activeMedia.name}
+                                className="h-full w-full object-cover opacity-40"
                             />
-                            {/* Rating badge */}
-                            <div className="mt-6 bg-linear-to-r from-primary to-primary-hover rounded-xl p-6 shadow-lg">
-                                <div className="flex items-center justify-between">
-                                    <span className="text-white text-lg font-semibold">Rating</span>
-                                    <span className="text-white text-3xl font-black">{vote_average.toFixed(1)}</span>
+                            <div className="absolute inset-0 bg-linear-to-t from-background via-background/20 to-transparent" />
+
+                            <div className="absolute bottom-0 left-0 p-8 md:p-16 w-full">
+                                <h1 className="text-5xl md:text-7xl font-black mb-4">
+                                    {isMovie(activeMedia) ? activeMedia.title : activeMedia.name}
+                                </h1>
+                                <p className="text-lg md:text-xl text-text-muted max-w-3xl line-clamp-3 mb-8">
+                                    {activeMedia.overview}
+                                </p>
+
+                                <button
+                                    onClick={() => addToFavorites(activeMedia)}
+                                    className={`px-8 py-4 rounded-xl font-bold transition-all transform hover:scale-105 ${isFavorite
+                                        ? "bg-red-500/20 text-red-500 border border-red-500/50"
+                                        : "bg-primary text-white shadow-lg shadow-primary/20"
+                                        }`}
+                                >
+                                    {isFavorite ? "♥ Remove from Favorites" : "♡ Add to Favorites"}
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Detalles Técnicos */}
+                        <div className="container mx-auto px-8 py-12">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div className="bg-surface p-6 rounded-2xl border border-white/5">
+                                    <h3 className="text-text-muted uppercase tracking-widest text-sm mb-2">Release Date</h3>
+                                    <p className="text-2xl font-bold">
+                                        {isMovie(activeMedia) ? activeMedia.release_date : activeMedia.first_air_date}
+                                    </p>
                                 </div>
-                                <div className="mt-2 bg-white/20 rounded-full h-2 overflow-hidden">
-                                    <div
-                                        className="bg-white h-full rounded-full transition-all duration-500"
-                                        style={{ width: `${(vote_average / 10) * 100}%` }}
-                                    />
+                                <div className="bg-surface p-6 rounded-2xl border border-white/5">
+                                    <h3 className="text-text-muted uppercase tracking-widest text-sm mb-2">Rating</h3>
+                                    <p className="text-2xl font-bold text-yellow-500">
+                                        ★ {activeMedia.vote_average.toFixed(1)} / 10
+                                    </p>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    {/* Details */}
-                    <div className="lg:w-2/3 space-y-8">
-                        {/* Overview */}
-                        <div className="bg-surface rounded-2xl p-8 shadow-lg">
-                            <h2 className="text-3xl font-bold mb-4 text-primary">Overview</h2>
-                            <p className="text-xl leading-relaxed text-text-main">{overview}</p>
-                            <button
-                                onClick={() => addToFavorites(activeMedia!)}
-                                className="bg-danger hover:bg-danger-hover text-white rounded-xl p-6 shadow-lg my-8 cursor-pointer">{isMediaInFavorites ? 'Remove from favorites' : 'Add to favorites'}</button>
-                        </div>
-
-                        {/* Statistics */}
-                        <div className="bg-surface rounded-2xl p-8 shadow-lg">
-                            <h2 className="text-3xl font-bold mb-6 text-primary">Movie Details</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="bg-background rounded-xl p-6 border-l-4 border-primary transform transition-all duration-300 hover:scale-105 hover:shadow-md">
-                                    <p className="text-text-muted text-sm uppercase tracking-wide mb-2">Release Date</p>
-                                    <p className="text-2xl font-bold">{isMovieMedia ? activeMedia.release_date : activeMedia.first_air_date}</p>
-                                </div>
-                                <div className="bg-background rounded-xl p-6 border-l-4 border-primary transform transition-all duration-300 hover:scale-105 hover:shadow-md">
-                                    <p className="text-text-muted text-sm uppercase tracking-wide mb-2">Average Rating</p>
-                                    <p className="text-2xl font-bold">{vote_average} / 10</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                )}
             </div>
 
-            <div>
-                {!errorAtCall && <MediaSection mediaType="movie" />}
-                {!errorAtCall && <MediaSection mediaType="tv" />}
-                {!errorAtCall && <FavoritesSection />}
-            </div>
-        </>
-    )
+            {/* Footer con Secciones Relacionadas */}
+            <section className="mt-12 bg-surface/30 backdrop-blur-sm border-t border-white/5">
+                <MediaSection mediaType="movie" />
+                <MediaSection mediaType="tv" />
+                <FavoritesSection />
+            </section>
+            <footer className="mt-12">
+                <UpperBar />
+            </footer>
+        </main>
+    );
 }
