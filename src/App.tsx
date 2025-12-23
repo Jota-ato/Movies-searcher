@@ -9,6 +9,7 @@ import ErrorLoading from "./components/ErrorLoading"
 import SearchedMedia from "./components/SearchedMovies"
 import MediaSection from "./components/MediaSection"
 import FavoritesSection from "./components/FavoritesSection"
+import Footer from "./components/Footer"
 
 function App() {
 
@@ -35,6 +36,7 @@ function App() {
             {!errorAtCall && <MediaSection mediaType="movie" />}
             {!errorAtCall && <MediaSection mediaType="tv" />}
             {!errorAtCall && <FavoritesSection />}
+            <Footer />
         </>
     )
 }
