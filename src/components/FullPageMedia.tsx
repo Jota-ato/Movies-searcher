@@ -13,7 +13,7 @@ export default function FullPageMedia() {
 
     const { id } = useParams()
     const location = useLocation()
-    const { getMediaById, errorAtCall, activeMedia, addToFavorites, trendingMovies, trendingSeries, setTrending, favoriteMedia } = useMoviesStore()
+    const { getMediaById, errorAtCall, activeMedia, addToFavorites, trendingMovies, trendingSeries, setTrending, favoriteMedia, isLoading } = useMoviesStore()
 
     // Determine media type from URL path
     const type: mediaType = location.pathname.startsWith('/tv') ? 'tv' : 'movie'
@@ -26,7 +26,7 @@ export default function FullPageMedia() {
         }
     }, [id, type, getMediaById, trendingMovies.length, trendingSeries.length, setTrending])
 
-    if (!id || errorAtCall) {
+    if (!id || errorAtCall || !activeMedia) {
         return (
             <>
                 <UpperBar />
@@ -34,7 +34,7 @@ export default function FullPageMedia() {
             </>
         )
     }
-    if (!activeMedia) {
+    if (isLoading) {
         return (<Spinner />)
     }
 

@@ -18,7 +18,7 @@ export default function UpperBar() {
     }
 
     return (
-        <div className="p-8 flex flex-col md:flex-row items-center justify-between gap-8 bg-surface">
+        <header className="p-8 flex flex-col md:flex-row items-center justify-between gap-8 bg-surface">
             <Link to="/" className="flex items-center gap-5 group no-underline">
                 <div className="relative flex items-center justify-center w-16 h-16 bg-linear-to-tr from-primary/20 to-primary/5 rounded-2xl border border-primary/20 shadow-lg shadow-primary/5 transition-all duration-300 group-hover:scale-105 group-hover:shadow-primary/20 group-hover:border-primary/40">
                     <svg
@@ -57,6 +57,8 @@ export default function UpperBar() {
                 <a className="text-2xl font-medium cursor-pointer hover:text-primary transition-colors" href="#favoritesSection">Favorites</a>
 
                 <input
+                    id="search"
+                    name="search"
                     type="text"
                     className="border-b border-text-main ml-8 outline-0"
                     placeholder="Search..."
@@ -64,6 +66,6 @@ export default function UpperBar() {
                     onChange={handleChange}
                 />
             </nav>
-        </div>
+        </header>
     )
 }
